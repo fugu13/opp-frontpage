@@ -15,4 +15,4 @@ class QuestionForm(Form):
     
     def __init__(self, *args, **kwargs):
         super(QuestionForm, self).__init__(*args, **kwargs)
-        self.group.choices = [(group.id, group.title) for group in models.FrequentlyAskedQuestionGroup.all().order('weight')]
+        self.group.choices = [(str(group.key().id()), group.title) for group in models.FrequentlyAskedQuestionGroup.all().order('weight')]

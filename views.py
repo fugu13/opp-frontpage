@@ -32,11 +32,21 @@ def faq_admin_group(request):
         if form.validate():
             group = models.FrequentlyAskedQuestionGroup(title=form.title.data, weight=form.weight.data)
             group.put()
-            redirect(url_for('admin/faq/group'))
+            return redirect(url_for('main/faq'))
     else:
         form = forms.GroupForm()
     return render_response('faq_admin_group.html', form=form)
 
 
 def faq_admin_question(request):
-    form = forms.QuestionForm(request.form)
+    if request.method == 'POST':
+        form = forms.QuestionForm(request.form)
+        if form.validate():
+            group = models.FrequentlyAskedQuestionGroup.get_by_id(int(form.group.data))
+            question = models.FrequentlyAskedQuestion(question=form.question.data, answer=form.answer.data, weight=form.weight.data, group=group.key())
+            question.put()
+            return redirect(url_for('main/faq'))
+    else:
+        form = forms.QuestionForm()
+    return render_response('faq_admin_question.html', form=form)
+

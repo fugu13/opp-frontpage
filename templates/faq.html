@@ -9,16 +9,25 @@
 	<h2>Frequently Asked Questions</h2>
 	<ul>
 	{% for group in groups %}
-	    <li>{{ group.title }}
+           <li><a href="#group{{group.key().id()}}">{{ group.title }}</a>
 	        <ul>
 	        {% for faq in group.faqs %}
-	            <li><a href="#{{faq.id}}">{{ faq.question }}</a></li>
+                   <li><a href="#question{{faq.key().id()}}">{{ faq.question }}</a></li>
 	        {% endfor %}
 	        </ul>
 	    </li>
     {% endfor %}
 	</ul>
-	
-	
 	</div>
+       {% for group in groups %}
+       <div class="section">
+       <h3><a href="#" name="group{{group.key().id()}}"></a>{{group.title}}</h3>
+       {% for faq in group.faqs %}
+        <h4><a href="#" name="question{{faq.key().id()}}"></a>{{ faq.question }}</h4>
+        <div>
+        {{faq.answer}}
+        </div>
+    {% endfor %}
+       </div>
+       {% endfor %}
 {% endblock %}

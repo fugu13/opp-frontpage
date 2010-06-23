@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+{% block title %}Orange Pekoe Press :: FAQ{% endblock %}
+
+{% block content %}
+       <div class="section">
+       <form method="post" action=".">
+       <p>Question: {{form.question}}</p>
+       <p>Answer: {{form.answer}}</p>
+       <p>Weight: {{form.weight}}</p>
+       <p>Group: {{form.group}}</p>
+       <input type="submit" value="Add" />
+       </form>
+
+       </div>
+{% endblock %}
