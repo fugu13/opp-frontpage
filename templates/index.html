@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+
+{% block title %}Orange Pekoe Press{% endblock %}
+
+{% block content %}
+    {{ super() }}
+	<div class="section">
+	<p class="first">Welcome to</p>
+	<h1>Orange Pekoe Press,</h1>
+	<p>a new short fiction ebook publisher, now accepting <a href="/submissions/">submissions</a> of up to around twelve thousand words in</p>
+	<ul><li>speculative fiction,</li><li>literary fiction,</li><li>dramatic fiction,</li><li>and translated fiction</li></ul>
+	<p>via this website. The first round of submissions may take a while to review, though I don't intend for any submission to take longer than twelve weeks. Especially because of
+	those possible delays, simultaneous submissions are fine, so long as you inform us of it. The first round of acceptances should go out sooner than that; twelve weeks is just
+	the outside amount of time to sort through everything.</p>
+	<p class="new">Short fiction is ready to retake lost ground in the world of publishing with the increasing popularity of the ebook.
+	You can read more about Orange Pekoe Press as the process goes on at
+	<a href="http://blog.orangepekoepress.com/">the Orange Pekoe Press blog</a> (recent entries shown below).</p>
+	<p class="new">Stories will be made available on all major ebook platforms for one dollar a story.</p>
+	</div>
+	<div class="section">
+	<h2>News, or, <a href="http://blog.orangepekoepress.com/">the Orange Pekoe Press Blog</a></h2>
+	{% for entry in entries %}
+	<div>
+	<h3><a href="{{ entry.link[4].href }}">{{ entry.title.text }}</a></h3>
+	{{ entry.content.text }}
+    <ul class="menu"><li><a href="{{ entry.link[1].href }}">{{ entry.link[1].title }}</a> so far.</li></ul>
+	</div>
+	{% endfor %}
+	</div>
+{% endblock %}

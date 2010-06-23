@@ -1,0 +1,190 @@
+
+__targets__:
+    package:
+        "{{ package }}":
+            "__init__.py": init
+    quickstart:
+        "{{ project_name }}":
+            "setup.py": setup
+            "main.py": main
+            "{{ package_name }}":
+                "__init__.py": init
+                "models.py": models
+                "views.py": views
+                "templates":
+                    "_base.jinja": base_jinja
+                    "index.jinja": index_jinja
+                "shared":
+                    "css":
+                        "main.css": main_css
+                "app.yaml": app
+    quickstart_bare:
+        "{{ project_name }}":
+            "setup.py": setup
+            "{{ package_name }}":
+                "__init__.py": init
+            "app.yaml": app
+
+
+encoding: |
+    # -*- coding: {{ encoding }} -*-
+
+
+docstring_title: |
+        {{ package_name }}
+
+
+docstring: |
+        {{ description }}
+
+
+module: |
+    {% block encoding %}{% include "encoding" %}{% endblock %}
+    """
+    {% block docstring_title %}{% include "docstring_title" %}{% endblock %}
+    {{ '~' * self.docstring_title()|count }}
+
+    {% block docstring %}{% include "docstring" %}{% endblock %}
+    """
+    {% block module_content %}{% endblock %}
+
+
+# Package __init__.py file
+init: |
+    {% extends "module" %}
+
+
+setup: |
+    {% extends "module" %}
+
+    {% block docstring_title %}{{ package_name }}.views{% endblock %}
+
+    {% block docstring %}Installer file for {{ project_name }}.{% endblock %}
+
+    {% block module_content %}
+    from setuptools import setup
+
+    setup(
+        name = "{{ project_name }}",
+        version = "{{ project_version }}",
+        packages = ["{{ package_name }}"],
+        description = "{{ package_description }}",
+        install_requires = ['glashammer'],
+    )
+    {% endblock %}
+
+
+views: |
+    {% extends "module" %}
+
+    {% block docstring_title %}{{ package_name }}.views{% endblock %}
+
+    {% block docstring %}Views for {{ project_name }}.{% endblock %}
+
+    {% block module_content %}
+    from glashammer.utils import render_response, redirect_to
+
+    def view_index(req):
+        return render_response('index.jinja')
+
+    {% endblock %}
+
+
+models: |
+    {% extends "module" %}
+
+    {% block docstring_title %}{{ package_name }}.models{% endblock %}
+
+    {% block docstring %}Database models for {{ project_name }}.{% endblock %}
+
+    {% block module_content %}
+    from glashammer.bundles.sqlalchdb import ModelBase
+
+    # create your models here by subclassing ModelBase
+    {% endblock %}
+
+
+base_jinja: |
+    {% raw %}
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                          "http://www.w3.org/TR/html4/loose.dtd">
+    <html>
+        <head>
+            <link rel="stylesheet"
+                href="{{ url_for('shared/main', filename='css/main.css') }}" />
+            {% block html_head %}{% endblock %}
+        </head>
+        <body>
+            {% block html_body %}{% endblock %}
+        </body>
+    </html>
+    {% endraw %}
+
+
+index_jinja: |
+    {% raw %}
+    {% extends "_base.jinja" %}
+    {% block html_body %}
+    {% endraw %}
+        <h1>Welcome to {{ project_name }}</h1>
+        <p>
+            This is the default page for a new starter project.
+        </p>
+    {% raw %}
+    {% endblock %}
+    {% endraw %}
+
+
+main_css: |
+    /* Styles for {{ project_name }} */
+
+    * {
+    }
+
+    body {
+    }
+
+
+app: |
+    # {{ project_name }}
+    # Glashammer application declaration file
+
+    # URLs
+    urls:
+        - url: /
+          endpoint: main/index
+          view: views.view_index
+
+    # Template search paths
+    template_searchpaths:
+        - templates
+
+    # Shared media
+    shared:
+        - name: main
+          path: shared
+
+    # Bundles
+    bundles:
+        - sqlalchdb
+
+    # Appliances
+    # appliances:
+    #    <Add appliances here>
+
+
+main: |
+    {% extends "module" %}
+
+    {% block module_content %}
+    from glashammer.application import declare_app
+    from glashammer.utils import sibpath
+
+    application = declare_app(sibpath(__file__, '{{ package_name }}/app.yaml'))
+
+    if __name__ == '__main__':
+        from glashammer.utils import run_very_simple
+        run_very_simple(application)
+
+    {% endblock %}
+

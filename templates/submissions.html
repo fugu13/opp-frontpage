@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block title %}Orange Pekoe Press :: Submissions{% endblock %}
+
+{% block content %}
+    {{ super() }}
+	<div class="section">
+	<h2>Submissions, a Play in 4 Acts.</h2>
+	<h3>1. Connect with Orange Pekoe Press</h3>
+	<p>Use your Google or Facebook account to connect with Orange Pekoe Press. Connecting will take you to your dashboard, the center of your interactions with Orange Pekoe Press.</p>
+	<h3>2. Submit Your Story</h3>
+	<p>Enter basic information about your story&mdash;title, author's name, text, whether or not it is a simultaneous submission, that sort of thing. You can find answers to questions about the submission process in the <a href="{{ url_for('main/faq') }}">FAQ</a>.</p>
+	<h3>3. Preview Story Appearance</h3>
+	<p>Immediately after submitting, you'll be shown a webpage demonstrating how Orange Pekoe Press's computers see your submission. Check this over for problems, and flag it for formatting errors if you see them, then submit a new version. You can also see this at any time in your dashboard.</p>
+	<h3>4. Watch for Updates</h3>
+	<p>We will email you when your story is accepted or rejected, but you can also check your story's status on your dashboard.</p>
+	</div>
+{% endblock %}

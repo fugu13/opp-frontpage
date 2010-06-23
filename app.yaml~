@@ -1,0 +1,27 @@
+
+application: orangepekoepress
+version: 1
+runtime: python
+api_version: 1
+
+
+handlers:
+
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
+  
+- url: /styles.css
+  static_files: static/styles.css
+  upload: static/styles.css
+
+- url: /facebook
+	static_files: static/facebook.txt
+	upload: static/facebook.txt
+
+- url: /static
+  static_dir: static
+
+- url: .*
+  script: main.py
+    
