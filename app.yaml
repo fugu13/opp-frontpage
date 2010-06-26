@@ -12,8 +12,8 @@ handlers:
 
 - url: /admin.*
   script: main.py
+  login: required
+  secure: always
 
 - url: .*
   script: main.py
-  login: required
-  secure: always
