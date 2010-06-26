@@ -1,5 +1,6 @@
-
 from glashammer.utils import render_response, redirect, url_for
+
+from google.appengine.api import users
 
 from gdata import service
 import gdata.alt.appengine
@@ -50,3 +51,6 @@ def faq_admin_question(request):
         form = forms.QuestionForm()
     return render_response('faq_admin_question.html', form=form)
 
+def home(request):
+    user = users.get_current_user()
+    #if there are any submissions for this user, direct to dashboard. Otherwise, direct to submit

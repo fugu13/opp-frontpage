@@ -2,10 +2,13 @@
 
 from glashammer import make_app
 from glashammer.bundles import gae
+from glashammer.utils import local
+
+from google.appengine.api import users
 
 import wtforms
 
-from views import *
+import views
 
 
 TEMPLATES_DIRECTORY = 'templates'
@@ -17,11 +20,15 @@ def setup(app):
 
     # setup templates
     app.add_template_searchpath(TEMPLATES_DIRECTORY)
-    app.add_url('/', 'main/index', view=index)
-    app.add_url('/submissions/', 'submissions/index', view=submissions_index)
-    app.add_url('/faq/', 'main/faq', view=faq)
-    app.add_url('/admin/faq/group/', 'admin/faq/group', view=faq_admin_group)
-    app.add_url('/admin/faq/question/', 'admin/faq/question', view=faq_admin_question)    
+    app.add_template_global('login', users.create_login_url("/home/"))
+    app.add_template_global('session', local('session'))
+
+    app.add_url('/', 'main/index', view=views.index)
+    app.add_url('/home/', 'home', view=views.home)
+    app.add_url('/submissions/', 'submissions/index', view=views.submissions_index)
+    app.add_url('/faq/', 'main/faq', view=views.faq)
+    app.add_url('/admin/faq/group/', 'admin/faq/group', view=views.faq_admin_group)
+    app.add_url('/admin/faq/question/', 'admin/faq/question', view=views.faq_admin_question)
 
 def main():
     gae.make_and_run_gae_app(setup)

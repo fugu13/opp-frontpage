@@ -15,5 +15,9 @@ handlers:
   login: required
   secure: always
 
+- url: /home.*
+  script: main.py
+  login: required
+
 - url: .*
   script: main.py
