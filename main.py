@@ -25,6 +25,10 @@ def setup(app):
 
     app.add_url('/', 'main/index', view=views.index)
     app.add_url('/home/', 'home', view=views.home)
+    app.add_url('/home/dashboard/', 'home/dashboard', view=views.dashboard)
+    app.add_url('/home/submit/', 'home/submit', view=views.submit)
+    app.add_url('/home/first/', 'home/first', view=views.first)
+    app.add_url('/home/profile/', 'home/profile', view=views.profile)
     app.add_url('/submissions/', 'submissions/index', view=views.submissions_index)
     app.add_url('/faq/', 'main/faq', view=views.faq)
     app.add_url('/admin/faq/group/', 'admin/faq/group', view=views.faq_admin_group)

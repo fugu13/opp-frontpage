@@ -24,7 +24,7 @@ class Account(polymodel.PolyModel):
     alternate_email = db.EmailProperty()
 
 class GoogleAccount(Account):
-    user = db.UserProperty(required=True)
+    google_user = db.UserProperty(required=True)
 
 #class FacebookAccount(Account):
 #    pass
