@@ -6,10 +6,12 @@ from google.appengine.ext import db
 from glashammer.utils import local
 from glashammer.utils import redirect, url_for
 
+import models
+
 def get_current_account():
     user = users.get_current_user()
     if user:
-        return db.GqlQuery('SELECT * FROM GoogleAccount WHERE google_user = :1', user).get()
+        return models.GoogleAccount.gql('WHERE google_user = :1', user).get()
     else:
         return None
 

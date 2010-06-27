@@ -1,0 +1,4 @@
+cron:
+- description: Daily exception report
+  url: /_ereporter?sender=rduhon@orangepekoepress.com  # The sender must be an app admin.
+  schedule: every 2 hours

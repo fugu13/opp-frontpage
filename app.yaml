@@ -19,5 +19,12 @@ handlers:
   script: main.py
   login: required
 
+- url: /stats.*
+  script: $PYTHON_LIB/google/appengine/ext/appstats/ui.py
+
+- url: /_ereporter/.*
+  script: $PYTHON_LIB/google/appengine/ext/ereporter/report_generator.py
+  login: admin
+
 - url: .*
   script: main.py

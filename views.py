@@ -1,4 +1,4 @@
-from glashammer.utils import render_response, redirect, url_for
+from glashammer.utils import render_response, redirect, url_for, Response
 
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -55,9 +55,9 @@ def faq_admin_question(request):
 
 def home(request):
     user = users.get_current_user()
-    account_key = db.GqlQuery('SELECT __key__ FROM GoogleAccount WHERE google_user = :1', user).get()
-    if account_key:
-        any_submission_key = db.GqlQuery('SELECT __key__ FROM Submission WHERE account = :1', account_key).get()
+    account = models.GoogleAccount.gql('WHERE google_user = :1', user).get()
+    if account:
+        any_submission_key = db.GqlQuery('SELECT __key__ FROM Submission WHERE account = :1', account.key()).get()
         if any_submission_key:
             return redirect(url_for('home/dashboard'))
         else:
@@ -69,16 +69,18 @@ def home(request):
 
 @utils.with_account
 def dashboard(request):
-    return ""
+    return Response("dashboard")
 
 @utils.with_account
 def submit(request):
-    return ""
+    return Response("submit")
 
 @utils.with_account
 def first(request):
-    return ""
+    return Response("first")
 
 @utils.with_account
 def profile(request):
-    return ""
+    return Response("profile")
+
+#TODO: format and display submissions

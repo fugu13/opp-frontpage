@@ -5,11 +5,15 @@ from glashammer.bundles import gae
 from glashammer.utils import local
 
 from google.appengine.api import users
+from google.appengine.ext.appstats.recording import appstats_wsgi_middleware
 
 import wtforms
 
 import views
 
+from google.appengine.ext import ereporter
+
+ereporter.register_logger()
 
 TEMPLATES_DIRECTORY = 'templates'
 
@@ -17,6 +21,8 @@ TEMPLATES_DIRECTORY = 'templates'
 def setup(app):
     # add the gae init function
     app.add_setup(gae.setup_gae)
+
+    app.add_middleware(appstats_wsgi_middleware)
 
     # setup templates
     app.add_template_searchpath(TEMPLATES_DIRECTORY)
