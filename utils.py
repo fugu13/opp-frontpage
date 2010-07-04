@@ -9,7 +9,7 @@ from glashammer.utils import redirect, url_for
 import models
 
 def get_current_account():
-    user = users.get_current_user()
+    user = local.gae_user
     if user:
         return models.GoogleAccount.gql('WHERE google_user = :1', user).get()
     else:

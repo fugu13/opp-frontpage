@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+
+{% block title %}Orange Pekoe Press :: Dashboard{% endblock %}
+
+{% block content %}
+	<div class="section">
+	    <table>
+            <thead>
+                <tr><th>Status</th><th>Title</th><th>Preview</th></tr>
+            </thead>
+            <tfoot>
+            </tfoot>
+            <tbody>
+                {% for submission in user.submissions %}
+                    <tr>
+                        <td>{{submission.status}}</td>
+                        <td>{{submission.title}}</td>
+                        <td><a href="{{submission.preview_url}}">{{submission.text|truncate(30)}}</a></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -27,7 +27,9 @@ def setup(app):
     # setup templates
     app.add_template_searchpath(TEMPLATES_DIRECTORY)
     app.add_template_global('login', users.create_login_url("/home/"))
-    app.add_template_global('session', local('session'))
+    app.add_template_global('logout', users.create_logout_url("/"))
+    app.add_template_global('user', local('gae_user'))
+    app.add_template_global('account', local('account'))
 
     app.add_url('/', 'main/index', view=views.index)
     app.add_url('/home/', 'home', view=views.home)
@@ -35,6 +37,7 @@ def setup(app):
     app.add_url('/home/submit/', 'home/submit', view=views.submit)
     app.add_url('/home/first/', 'home/first', view=views.first)
     app.add_url('/home/profile/', 'home/profile', view=views.profile)
+    app.add_url('/home/preview/<int:submission_id>/', 'home/preview', view=views.preview)
     app.add_url('/submissions/', 'submissions/index', view=views.submissions_index)
     app.add_url('/faq/', 'main/faq', view=views.faq)
     app.add_url('/admin/faq/group/', 'admin/faq/group', view=views.faq_admin_group)

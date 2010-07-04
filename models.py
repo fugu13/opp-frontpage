@@ -1,15 +1,15 @@
 from google.appengine.ext import db
 from google.appengine.ext.db import polymodel
-
+from glashammer.utils import url_for, local
 
 class FrequentlyAskedQuestionGroup(db.Model):
     title = db.StringProperty(required=True)
     weight = db.IntegerProperty(required=True)
     
-    def _get_faqs(self):
+    def get_faqs(self):
         return sorted(self.faq_set, key=lambda x: x.weight)
     
-    faqs = property(_get_faqs)
+    faqs = property(get_faqs)
 
 class FrequentlyAskedQuestion(db.Model):
     question = db.TextProperty(required=True)
@@ -32,8 +32,14 @@ class GoogleAccount(Account):
 
 class Submission(db.Model):
     account = db.ReferenceProperty(Account, collection_name='submissions', required=True)
-    simultaneous = db.BooleanProperty()
-    cover_letter = db.TextProperty()
-    title = db.StringProperty()
-    text = db.TextProperty()
+    simultaneous = db.BooleanProperty(required=True)
+    cover_letter = db.TextProperty(required=True)
+    title = db.StringProperty(required=True)
+    text = db.TextProperty(required=True)
     categories = db.StringListProperty()
+    status = db.StringProperty()
+
+    def get_preview_url(self):
+        return url_for("home/preview", submission_id=self.key().id())
+
+    preview_url = property(get_preview_url)

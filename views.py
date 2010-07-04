@@ -1,4 +1,4 @@
-from glashammer.utils import render_response, redirect, url_for, Response
+from glashammer.utils import render_response, redirect, url_for, Response, local
 
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -54,7 +54,7 @@ def faq_admin_question(request):
     return render_response('faq_admin_question.html', form=form)
 
 def home(request):
-    user = users.get_current_user()
+    user = local.gae_user
     account = models.GoogleAccount.gql('WHERE google_user = :1', user).get()
     if account:
         any_submission_key = db.GqlQuery('SELECT __key__ FROM Submission WHERE account = :1', account.key()).get()
@@ -69,18 +69,40 @@ def home(request):
 
 @utils.with_account
 def dashboard(request):
-    return Response("dashboard")
+    return render_response("dashboard.html")
 
 @utils.with_account
 def submit(request):
-    return Response("submit")
+    if request.method == "POST":
+        form = forms.SubmissionForm(request.form)
+        if form.validate():
+            submission = models.Submission(account=local.account, simultaneous=form.simultaneous, cover_letter=form.cover_letter, title=form.title, text=form.text, categories=form.categories)
+            submission.put()
+            return redirect(url_for('home/preview', submission_id=submission.key().id()))
+    else:
+        form = forms.SubmissionForm()
+    return render_response('submit.html', form=form)
+
+def render_profile(request, template_name):
+    if request.method == "POST":
+        form = forms.ProfileForm(request.form)
+        if form.validate():
+            form.populate_obj(local.account)
+            local.account.put()
+    else:
+        form = forms.ProfileForm()
+    return render_response(template_name, form=form)
+
 
 @utils.with_account
 def first(request):
-    return Response("first")
+    return render_profile(request, "first.html")
 
 @utils.with_account
 def profile(request):
-    return Response("profile")
+    return render_profile(request, "profile.html")
 
-#TODO: format and display submissions
+@utils.with_account
+def preview(request, submission_id):
+    submission = models.Submission.get_by_id(submission_id)
+    return render_response("preview.html", submission=submission)

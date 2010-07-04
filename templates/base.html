@@ -17,7 +17,14 @@
             <li><a href="{{ url_for('main/index') }}">Home</a></li>
             <li><a href="{{ url_for('submissions/index') }}">Submissions</a></li>
             <li><a href="{{ url_for('main/faq') }}">FAQ</a></li>
+            {% if user %}
+            <li><a href="{{ url_for('home/dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('home/submit') }}">Submit</a></li>
+            <li><a href="{{ url_for('home/profile') }}">Profile</a></li>
+            <li><a href="{{ logout }}">Logout</a></li>
+            {% else %}
             <li><a href="{{ login }}">Connect</a></li>
+            {% endif %}
         </ul>
 	    </div>
 		{% block content %}{% endblock %}
