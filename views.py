@@ -84,6 +84,7 @@ def submit(request):
                                            text_list=[db.Text(utils.text_tidy(form.text.data))],
                                            categories=form.categories.data)
             submission.put()
+            flash("Your submission has been saved.")
             return redirect(url_for('home/preview', submission_id=submission.key().id()))
     else:
         form = forms.SubmissionForm()
@@ -101,6 +102,7 @@ def resubmit(request, submission_id):
         if form.validate():
             submission.text_list.append(db.Text(utils.text_tidy(form.text.data)))
             submission.put()
+            flash("Your submission has been updated.")
             return redirect(url_for('home/preview', submission_id=submission.key().id()))
     else:
         form = forms.ResubmissionForm(obj=submission)
@@ -119,7 +121,7 @@ def render_profile(request, template_name, redirect_url):
                 provided = True
             if provided:
                 local.account.put()
-                flash("Your profile information has been saved")
+                flash("Your profile information has been saved.")
             return redirect(redirect_url)
     else:
         form = forms.ProfileForm(obj=local.account)
