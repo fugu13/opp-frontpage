@@ -26,6 +26,7 @@
             <li><a href="{{ login }}">Connect</a></li>
             {% endif %}
         </ul>
+        {% if flash %}{% for message in flash: %}<h4>{{message}}</h4> {% endfor %}{% endif %}
 	    </div>
 		{% block content %}{% endblock %}
 		</div>

@@ -5,6 +5,7 @@ import logging
 
 from glashammer import make_app
 from glashammer.bundles import gae
+from glashammer.bundles import sessions
 from glashammer.utils import local
 
 from google.appengine.api import users
@@ -27,6 +28,9 @@ def setup(app):
 
     # add the gae init function
     app.add_setup(gae.setup_gae)
+    app.add_setup(sessions.setup_app)
+    #app.conf.change_single('sessions/cookie_name', 'flash_message')
+    #app.conf.change_single('sessions/secret', 'c00kie_m0nster')
 
     app.add_middleware(appstats_wsgi_middleware)
 

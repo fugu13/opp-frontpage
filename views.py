@@ -1,4 +1,5 @@
-from glashammer.utils import render_response, redirect, url_for, Response, local
+from glashammer.utils import redirect, url_for, Response, local
+from flash import render_response, flash
 
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -105,15 +106,21 @@ def resubmit(request, submission_id):
         form = forms.ResubmissionForm(obj=submission)
     return render_response('resubmit.html', form=form, submission=submission)
 
-def render_profile(request, template_name):
+def render_profile(request, template_name, redirect_url):
     if request.method == "POST":
         form = forms.ProfileForm(request.form)
         if form.validate():
+            provided = False
             if form.full_name.data:
                 local.account.full_name = form.full_name.data
+                provided = True
             if form.alternate_email.data:
                 local.account.alternate_email = form.alternate_email.data
-            local.account.put()
+                provided = True
+            if provided:
+                local.account.put()
+                flash("Your profile information has been saved")
+            return redirect(redirect_url)
     else:
         form = forms.ProfileForm(obj=local.account)
     return render_response(template_name, form=form)
@@ -121,11 +128,11 @@ def render_profile(request, template_name):
 
 @utils.with_account
 def first(request):
-    return render_profile(request, "first.html")
+    return render_profile(request, "first.html", url_for('home/submit'))
 
 @utils.with_account
 def profile(request):
-    return render_profile(request, "profile.html")
+    return render_profile(request, "profile.html", url_for('home/profile'))
 
 @utils.with_account
 def preview(request, submission_id):
