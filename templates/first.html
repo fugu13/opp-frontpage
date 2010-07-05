@@ -1,10 +1,19 @@
 {% extends "base.html" %}
-
+{% from 'macros.html' import with_errors %}
 
 {% block title %}Orange Pekoe Press :: Welcome, {{user.nickname()}}{% endblock %}
 
 {% block content %}
 	<div class="section">
-	
+	<h2>Welcome, {{user.nickname()}}</h2>
+    <p>We have recorded your email as {{account.email}}. That's how we will contact you in the future. If you want to, you can provide some additional information, below. This is completely optional
+    to submit, though if we ever sign a contract to purchase your work, we'll need your full name then. The alternate email is the backup plan for contacting you. If we send an important email to {{account.email}} and you don't respond, we will use this email.</p>
+    <p>If you don't want to fill out this information now, you can go straight in and <a href="{{url_for('home/submit')}}">submit your short fiction</a>.
+    <form method="post" action=".">
+	    {% for field in form %}
+            {{ with_errors(field) }}
+        {% endfor %}
+         <input type="submit" value="Save" />
+    </form>
     </div>
 {% endblock %}

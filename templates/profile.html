@@ -1,10 +1,17 @@
 {% extends "base.html" %}
-
+{% from 'macros.html' import with_errors %}
 
 {% block title %}Orange Pekoe Press :: Profile for {{user.nickname()}}{% endblock %}
 
 {% block content %}
 	<div class="section">
-	
+    <h2>Profile for {{account.nickname()}}</h2>
+    <p>The main email for your Google account, which we will use to contact you first, is {{account.email}}. You can update your additional profile information below.</p>
+	<form method="post" action=".">
+	    {% for field in form %}
+            {{ with_errors(field) }}
+        {% endfor %}
+         <input type="submit" value="Save" />
+        </form>
     </div>
 {% endblock %}

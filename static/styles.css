@@ -29,8 +29,8 @@ ul.menu {
 #content {
 	position: absolute;
 	top: 2em;
-	left: 8.5em;
-	width: 60%;
+	left: 5%;
+	width: 90%;
 }
 
 .section {
@@ -44,8 +44,43 @@ ul.menu {
 	border-style: solid;
 }
 
-div {
+div.section {
     margin-bottom: 2em;
+}
+
+div {
+    margin-bottom: 1.5em;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+}
+
+thead tr {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+tbody tr {
+    height: 2.5em;
+    vertical-align: bottom;
+}
+
+.titlecolumn {
+    width: 30%;
+}
+.previewcolumn {
+    width: 55%;
+}
+
+.nosubmissions {
+
 }
 
 div.blogger-post-footer {
@@ -54,12 +89,13 @@ div.blogger-post-footer {
 }
 
 p {
-	margin: 0px;
+	margin-top: 0px;
 	line-height: 140%;
+    margin-bottom: 1em;
 }
 
 p.first {
-    margin-top: 0;
+    margin-bottom: 0;
 }
 
 h1 {
@@ -74,12 +110,40 @@ h2, h3 {
 	font-family: 'Josefin Sans Std Light', 'Trebuchet MS', Helvetica;
 }
 
+label {
+    font-family: 'Josefin Sans Std Light', 'Trebuchet MS', Helvetica;
+    font-weight: bold;
+}
+
+.has_error label {
+    color: red;
+}
+
+.has_error ul {
+    font-size: 80%;
+    list-style-type: none;
+    color: red;
+}
+
+ul#category_select {
+    font-size: 100%;
+}
+
+textarea {
+    width: 70%;
+    height: 20em;
+}
+
 ul {
 	list-style-type: none;
 	margin-left: 10px;
 	padding: 0;
 	margin-top: 0;
 	margin-bottom: 0;
+}
+
+form {
+    margin-bottom: 1em;
 }
 
 li {

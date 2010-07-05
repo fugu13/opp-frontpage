@@ -76,21 +76,46 @@ def submit(request):
     if request.method == "POST":
         form = forms.SubmissionForm(request.form)
         if form.validate():
-            submission = models.Submission(account=local.account, simultaneous=form.simultaneous, cover_letter=form.cover_letter, title=form.title, text=form.text, categories=form.categories)
+            submission = models.Submission(account=local.account,
+                                           simultaneous=form.simultaneous.data,
+                                           cover_letter=db.Text(utils.text_tidy(form.cover_letter.data)),
+                                           title=utils.text_tidy(form.title.data),
+                                           text_list=[db.Text(utils.text_tidy(form.text.data))],
+                                           categories=form.categories.data)
             submission.put()
             return redirect(url_for('home/preview', submission_id=submission.key().id()))
     else:
         form = forms.SubmissionForm()
     return render_response('submit.html', form=form)
 
+
+@utils.with_account
+def resubmit(request, submission_id):
+    submission = models.Submission.get_by_id(submission_id)
+    if submission is None or submission.account.key().id() != local.account.key().id():
+        logging.warning('Attempt to resubmit submission "%s" by account "%s" with email "%s".' % (submission_id, local.account.key().id(), local.account.email))
+        return redirect(url_for('main/index'))
+    if request.method == "POST":
+        form = forms.ResubmissionForm(request.form)
+        if form.validate():
+            submission.text_list.append(db.Text(utils.text_tidy(form.text.data)))
+            submission.put()
+            return redirect(url_for('home/preview', submission_id=submission.key().id()))
+    else:
+        form = forms.ResubmissionForm(obj=submission)
+    return render_response('resubmit.html', form=form, submission=submission)
+
 def render_profile(request, template_name):
     if request.method == "POST":
         form = forms.ProfileForm(request.form)
         if form.validate():
-            form.populate_obj(local.account)
+            if form.full_name.data:
+                local.account.full_name = form.full_name.data
+            if form.alternate_email.data:
+                local.account.alternate_email = form.alternate_email.data
             local.account.put()
     else:
-        form = forms.ProfileForm()
+        form = forms.ProfileForm(obj=local.account)
     return render_response(template_name, form=form)
 
 
@@ -105,4 +130,9 @@ def profile(request):
 @utils.with_account
 def preview(request, submission_id):
     submission = models.Submission.get_by_id(submission_id)
+    if submission is None or submission.account.key().id() != local.account.key().id():
+        logging.warning('Attempt to retrieve submission "%s" by account "%s" with email "%s".' % (submission_id, local.account.key().id(), local.account.email))
+        return redirect(url_for('main/index'))
     return render_response("preview.html", submission=submission)
+
+#TODO: tracking of ads. Maybe some sort of middleware?

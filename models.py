@@ -23,6 +23,16 @@ class Account(polymodel.PolyModel):
     full_name = db.StringProperty()
     alternate_email = db.EmailProperty()
 
+    def nickname(self):
+        if self.full_name:
+            return self.full_name
+        return self.email
+    
+    def get_ordered_submissions(self):
+        return sorted(self.submissions, key=lambda i: i.created)
+
+    ordered_submissions = property(get_ordered_submissions)
+
 class GoogleAccount(Account):
     google_user = db.UserProperty(required=True)
 
@@ -35,11 +45,18 @@ class Submission(db.Model):
     simultaneous = db.BooleanProperty(required=True)
     cover_letter = db.TextProperty(required=True)
     title = db.StringProperty(required=True)
-    text = db.TextProperty(required=True)
+    text_list = db.ListProperty(item_type=db.Text)
     categories = db.StringListProperty()
-    status = db.StringProperty()
+    status = db.StringProperty(default="Submitted")
+    created = db.DateTimeProperty(auto_now_add=True)
+    altered = db.DateTimeProperty(auto_now=True)
 
     def get_preview_url(self):
         return url_for("home/preview", submission_id=self.key().id())
 
     preview_url = property(get_preview_url)
+
+    def get_text(self):
+        return self.text_list[-1]
+
+    text = property(get_text)

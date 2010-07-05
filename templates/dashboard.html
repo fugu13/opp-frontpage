@@ -5,18 +5,22 @@
 
 {% block content %}
 	<div class="section">
+        <h2>Dashboard</h2>
 	    <table>
             <thead>
-                <tr><th>Status</th><th>Title</th><th>Preview</th></tr>
+                <tr><th>Status</th><th class="titlecolumn">Title</th><th class="previewcolumn">Preview</th></tr>
             </thead>
             <tfoot>
             </tfoot>
             <tbody>
-                {% for submission in user.submissions %}
+                {% for submission in account.ordered_submissions %}
                     <tr>
-                        <td>{{submission.status}}</td>
-                        <td>{{submission.title}}</td>
-                        <td><a href="{{submission.preview_url}}">{{submission.text|truncate(30)}}</a></td></tr>
+                        <td>{{submission.status|e}}</td>
+                        <td>{{submission.title|e}}</td>
+                        <td><a href="{{submission.preview_url}}">{{submission.text|truncate(50)|e}}</a></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="3" class="nosubmissions">No submissions found.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
