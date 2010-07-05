@@ -8,7 +8,7 @@
 	<h2>Frequently Asked Questions</h2>
 	<ul>
 	{% for group in groups %}
-           <li><a href="#group{{group.key().id()}}">{{ group.title }}</a>
+           <li><h3><a href="#group{{group.key().id()}}">{{ group.title }}</a></h3>
 	        <ul>
 	        {% for faq in group.faqs %}
                    <li><a href="#question{{faq.key().id()}}">{{ faq.question }}</a></li>
