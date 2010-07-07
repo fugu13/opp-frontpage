@@ -1,7 +1,7 @@
 
 html, body {
 	background-color: #DEB887;
-	font-family: 'Droid Serif', Garamond, serif;
+	font-family: Garamond, serif;
 }
 
 a:link {
@@ -89,8 +89,7 @@ div.blogger-post-footer {
 }
 
 p {
-	margin-top: 0px;
-	line-height: 140%;
+	margin-top: 0px;lc
     margin-bottom: 1em;
 }
 
@@ -147,8 +146,7 @@ form {
 }
 
 li {
-	line-height: 150%;
-	margin: 5px;
+	margin: 15px;
 	padding: 0;
 }
 
