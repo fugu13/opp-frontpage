@@ -22,7 +22,7 @@ handlers:
 - url: /stats.*
   script: $PYTHON_LIB/google/appengine/ext/appstats/ui.py
 
-- url: /_ereporter/.*
+- url: /_ereporter.*
   script: $PYTHON_LIB/google/appengine/ext/ereporter/report_generator.py
   login: admin
 
